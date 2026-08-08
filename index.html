@@ -7,7 +7,10 @@
 <meta name="description" content="Générateur de factures et de devis pour indépendants et petites entreprises belges. Tout se passe dans votre navigateur : aucune donnée n'est envoyée nulle part.">
 <meta name="theme-color" content="#14141B">
 <link rel="stylesheet" href="css/facturier.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%236355E0'/><path d='M9 8h14v16l-3.5-2.5L16 24l-3.5-2.5L9 24z' fill='%23fff'/></svg>">
+<!-- La marque de Core, ses fichiers réels — pas un signe redessiné. -->
+<link rel="icon" href="img/core-mark-32.png" sizes="32x32">
+<link rel="icon" href="img/core-mark-192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="img/core-mark-512.png">
 </head>
 <body>
 
@@ -24,15 +27,14 @@
 
     <header class="panneau__tete">
       <h1 class="marque">
-        <span class="marque__signe" aria-hidden="true">
-          <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
-            <rect width="32" height="32" rx="7" fill="#6355E0"/>
-            <path d="M9 8h14v16l-3.5-2.5L16 24l-3.5-2.5L9 24z" fill="#fff"/>
-          </svg>
-        </span>
+        <img class="marque__signe" src="img/core-mark-192.png" width="26" height="26"
+             alt="" aria-hidden="true">
         Facturier
       </h1>
-      <p class="marque__note">Rien ne sort de votre navigateur.</p>
+      <p class="marque__note">
+        Un outil <a class="marque__lien" href="https://core-agency.be" target="_blank" rel="noopener">Core</a>
+        — rien ne sort de votre navigateur.
+      </p>
     </header>
 
     <div class="panneau__corps">

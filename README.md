@@ -1,6 +1,10 @@
 <div align="center">
 
+<img src="img/core-mark-192.png" width="72" height="72" alt="Marque de Core">
+
 # Facturier
+
+**Un outil [Core](https://core-agency.be)**
 
 **Factures et devis, sans compte, sans serveur, sans dépendance.**
 

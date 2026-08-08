@@ -121,12 +121,18 @@ body {
   font-weight: 600;
   letter-spacing: -.01em;
 }
-.marque__signe { display: inline-flex; }
+.marque__signe { display: block; border-radius: 6px; }
 .marque__note {
-  margin: .35rem 0 0 2.05rem;
+  margin: .35rem 0 0 2.25rem;
   font-size: .78rem;
   color: var(--encre-douce);
 }
+.marque__lien {
+  color: var(--signal-vif);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+.marque__lien:hover { color: var(--encre-claire); }
 
 .panneau__corps {
   flex: 1;
