@@ -1,0 +1,439 @@
+/* ==========================================================================
+   FACTURIER — feuille de style unique
+   --------------------------------------------------------------------------
+   Deux mondes dans une seule page :
+     · L'ATELIER (.panneau) : sombre, dense, c'est l'outil.
+     · LA FEUILLE (.feuille) : blanche, aérée, c'est le document. Elle est
+       dimensionnée en millimètres pour correspondre exactement à ce qui
+       sortira de l'imprimante.
+   Le contraste entre les deux n'est pas décoratif : il dit en un coup d'œil
+   ce qui sera imprimé et ce qui ne le sera pas.
+   ========================================================================== */
+
+/* ⚠️ `[hidden]` a une spécificité nulle : n'importe quelle classe posant un
+   `display` le bat, et l'élément « caché » reste visible. On le verrouille
+   ici, une fois pour toutes. */
+[hidden] { display: none !important; }
+
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  /* L'atelier */
+  --etabli:      #1B1D21;
+  --etabli-haut: #24272C;
+  --etabli-bord: #33373E;
+  --encre-claire:#E8E9EB;
+  --encre-douce: #9AA0A8;
+  --signal:      #C8553D;
+  --signal-vif:  #E0684E;
+
+  /* Le document */
+  --papier:      #FFFFFF;
+  --doc-encre:   #14161A;
+  --doc-douce:   #6B7280;
+  --doc-filet:   #E3E5E9;
+
+  --rayon: 7px;
+
+  /* Une pile système : la police se charge instantanément et l'outil
+     fonctionne hors ligne. Aucune requête réseau, nulle part. */
+  --ui: ui-sans-serif, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --doc: ui-serif, Georgia, "Times New Roman", serif;
+  --chiffres: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+}
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--ui);
+  background: var(--etabli);
+  color: var(--encre-claire);
+  -webkit-font-smoothing: antialiased;
+}
+
+.atelier {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  min-height: 100vh;
+}
+
+/* ==========================================================================
+   LE PANNEAU
+   ========================================================================== */
+
+.panneau {
+  display: flex;
+  flex-direction: column;
+  background: var(--etabli);
+  border-right: 1px solid var(--etabli-bord);
+  max-height: 100vh;
+  position: sticky;
+  top: 0;
+}
+
+.panneau__tete {
+  padding: 1.35rem 1.5rem 1.1rem;
+  border-bottom: 1px solid var(--etabli-bord);
+}
+
+.marque {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin: 0;
+  font-size: 1.06rem;
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+.marque__signe { display: inline-flex; }
+.marque__note {
+  margin: .35rem 0 0 2.05rem;
+  font-size: .78rem;
+  color: var(--encre-douce);
+}
+
+.panneau__corps {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem 1.5rem 2rem;
+  /* Scrollbar discrète, mais JAMAIS masquée : l'utilisateur doit voir
+     qu'il reste du contenu sous la ligne de flottaison. */
+  scrollbar-width: thin;
+  scrollbar-color: var(--etabli-bord) transparent;
+}
+
+.bloc { margin-bottom: 1.9rem; }
+.bloc__titre {
+  margin: 0 0 .8rem;
+  font-size: .7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .11em;
+  color: var(--encre-douce);
+}
+
+.grille { display: grid; gap: .7rem; }
+.grille--2 { grid-template-columns: 1fr 1fr; }
+.grille--3 { grid-template-columns: 1fr 1fr .8fr; }
+
+.champ { display: block; margin-bottom: .7rem; }
+.champ__nom {
+  display: block;
+  margin-bottom: .3rem;
+  font-size: .74rem;
+  color: var(--encre-douce);
+}
+.champ__saisie {
+  width: 100%;
+  padding: .5rem .65rem;
+  font: inherit;
+  font-size: .86rem;
+  color: var(--encre-claire);
+  background: var(--etabli-haut);
+  border: 1px solid var(--etabli-bord);
+  border-radius: var(--rayon);
+  transition: border-color .15s, box-shadow .15s;
+}
+.champ__saisie:focus {
+  outline: none;
+  border-color: var(--signal);
+  box-shadow: 0 0 0 3px rgb(200 85 61 / .16);
+}
+.champ__saisie::placeholder { color: #6A7078; }
+.champ__saisie--zone { resize: vertical; line-height: 1.45; }
+.champ__saisie--court { width: auto; flex: 0 0 auto; }
+.champ__groupe { display: flex; gap: .4rem; }
+
+.champ--case {
+  display: flex;
+  gap: .6rem;
+  align-items: flex-start;
+  padding: .75rem;
+  background: var(--etabli-haut);
+  border: 1px solid var(--etabli-bord);
+  border-radius: var(--rayon);
+  font-size: .82rem;
+  cursor: pointer;
+}
+.champ--case input { margin-top: .15rem; accent-color: var(--signal); }
+.champ__aide {
+  display: block;
+  margin-top: .25rem;
+  font-size: .76rem;
+  line-height: 1.45;
+  color: var(--encre-douce);
+}
+
+/* Les lignes de prestation */
+.lignes { display: grid; gap: .6rem; margin-bottom: .8rem; }
+
+.ligne {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: .45rem;
+  padding: .7rem;
+  background: var(--etabli-haut);
+  border: 1px solid var(--etabli-bord);
+  border-radius: var(--rayon);
+}
+.ligne__chiffres {
+  display: grid;
+  grid-template-columns: .8fr 1fr .9fr auto;
+  gap: .4rem;
+  align-items: center;
+}
+.ligne__jeter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  color: var(--encre-douce);
+  background: none;
+  border: 1px solid var(--etabli-bord);
+  border-radius: var(--rayon);
+  cursor: pointer;
+  transition: color .15s, border-color .15s;
+}
+.ligne__jeter:hover { color: var(--signal-vif); border-color: var(--signal); }
+
+/* Les boutons */
+.bouton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem;
+  padding: .58rem .9rem;
+  font: inherit;
+  font-size: .84rem;
+  font-weight: 500;
+  border-radius: var(--rayon);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s;
+}
+.bouton--plein {
+  width: 100%;
+  color: #fff;
+  background: var(--signal);
+}
+.bouton--plein:hover { background: var(--signal-vif); }
+.bouton--fantome {
+  width: 100%;
+  color: var(--encre-douce);
+  background: none;
+  border: 1px dashed var(--etabli-bord);
+}
+.bouton--fantome:hover { color: var(--encre-claire); border-color: var(--encre-douce); }
+.bouton--discret {
+  flex: 1;
+  padding: .45rem .5rem;
+  font-size: .78rem;
+  color: var(--encre-douce);
+  background: var(--etabli-haut);
+  border-color: var(--etabli-bord);
+}
+.bouton--discret:hover { color: var(--encre-claire); }
+
+.panneau__pied {
+  padding: 1rem 1.5rem 1.15rem;
+  border-top: 1px solid var(--etabli-bord);
+  background: var(--etabli);
+}
+.pied__secondaire { display: flex; gap: .45rem; margin-top: .55rem; }
+.pied__note {
+  margin: .7rem 0 0;
+  font-size: .73rem;
+  color: var(--encre-douce);
+  text-align: center;
+}
+
+/* ==========================================================================
+   LA SCENE ET LA FEUILLE
+   ========================================================================== */
+
+.scene {
+  padding: 2.5rem;
+  overflow-x: auto;
+  background:
+    radial-gradient(ellipse at 50% 0%, #23262B 0%, var(--etabli) 60%);
+}
+
+/* Les dimensions sont en millimètres : à l'écran comme à l'impression,
+   c'est la même feuille. 210 mm de large, marges de 16 mm. */
+.feuille {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  padding: 16mm;
+  background: var(--papier);
+  color: var(--doc-encre);
+  font-family: var(--doc);
+  font-size: 10.5pt;
+  line-height: 1.5;
+  box-shadow: 0 24px 70px rgb(0 0 0 / .45);
+  display: flex;
+  flex-direction: column;
+}
+
+.doc__tete {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 7mm;
+  border-bottom: 2px solid var(--doc-encre);
+}
+.doc__type {
+  margin: 0;
+  font-family: var(--ui);
+  font-size: 21pt;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.1;
+}
+.doc__numero {
+  margin: 1mm 0 0;
+  font-family: var(--chiffres);
+  font-size: 10pt;
+  color: var(--doc-douce);
+}
+.doc__dates { text-align: right; font-family: var(--ui); font-size: 9pt; }
+.doc__dates p { margin: 0 0 1mm; }
+.doc__dates span { display: block; color: var(--doc-douce); font-size: 8pt; }
+.doc__dates b { font-weight: 600; }
+
+.doc__parties {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10mm;
+  padding: 7mm 0;
+}
+.partie__role {
+  margin: 0 0 2mm;
+  font-family: var(--ui);
+  font-size: 7.5pt;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--signal);
+}
+.partie__nom { margin: 0; font-weight: 700; font-size: 11.5pt; }
+.partie__adresse { margin: 1mm 0 0; white-space: pre-line; color: var(--doc-douce); }
+.partie__meta {
+  margin: 1.5mm 0 0;
+  font-family: var(--ui);
+  font-size: 8.5pt;
+  color: var(--doc-douce);
+}
+
+.doc__table { width: 100%; border-collapse: collapse; margin-top: 3mm; }
+.doc__table th {
+  padding: 2.5mm 2mm;
+  font-family: var(--ui);
+  font-size: 7.5pt;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--doc-douce);
+  text-align: left;
+  border-bottom: 1px solid var(--doc-encre);
+}
+.doc__table td {
+  padding: 3mm 2mm;
+  vertical-align: top;
+  border-bottom: 1px solid var(--doc-filet);
+}
+.col-num { text-align: right; white-space: nowrap; }
+.doc__table td.col-num { font-family: var(--chiffres); font-size: 9.5pt; }
+.ligne__desc { white-space: pre-line; }
+
+.doc__bas {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10mm;
+  align-items: start;
+  padding-top: 6mm;
+}
+.doc__mentions { font-family: var(--ui); font-size: 8.5pt; color: var(--doc-douce); }
+.doc__mentions__texte { margin: 0; white-space: pre-line; line-height: 1.5; }
+.doc__mentions__franchise {
+  margin: 2.5mm 0 0;
+  padding: 2mm 2.5mm;
+  color: var(--doc-encre);
+  background: #F6F1EF;
+  border-left: 2px solid var(--signal);
+}
+.doc__mentions__iban {
+  margin: 3mm 0 0;
+  font-family: var(--chiffres);
+  font-size: 8.5pt;
+  color: var(--doc-encre);
+}
+
+.doc__totaux { min-width: 62mm; font-family: var(--ui); }
+.doc__totaux dl { display: grid; grid-template-columns: 1fr auto; gap: 1.5mm 6mm; margin: 0; font-size: 9pt; }
+.doc__totaux dt { color: var(--doc-douce); }
+.doc__totaux dd { margin: 0; text-align: right; font-family: var(--chiffres); }
+.doc__du {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 6mm;
+  margin: 3mm 0 0;
+  padding-top: 2.5mm;
+  border-top: 2px solid var(--doc-encre);
+  font-size: 9.5pt;
+}
+.doc__du b { font-family: var(--chiffres); font-size: 14pt; font-weight: 700; }
+
+.doc__pied {
+  margin-top: auto;
+  padding-top: 8mm;
+  font-family: var(--ui);
+  font-size: 8pt;
+  color: var(--doc-douce);
+  text-align: center;
+}
+
+/* ==========================================================================
+   ECRANS ETROITS
+   La feuille garde ses 210 mm — un document ne se redimensionne pas. On la
+   met à l'échelle plutôt que de la déformer.
+   ========================================================================== */
+@media (max-width: 1180px) {
+  .atelier { grid-template-columns: 1fr; }
+  .panneau { position: static; max-height: none; border-right: none; border-bottom: 1px solid var(--etabli-bord); }
+  .scene { padding: 1.5rem; }
+  .feuille { transform-origin: top center; }
+}
+@media (max-width: 820px) {
+  .feuille { transform: scale(.62); margin-bottom: -110mm; }
+  .grille--3 { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   IMPRESSION
+   Le plan de travail disparaît, la feuille occupe la page. Les marges sont
+   déjà dans `.feuille` : celles de @page sont donc à zéro, sinon elles
+   s'additionneraient et le document se décalerait vers l'intérieur.
+   ========================================================================== */
+@page { size: A4; margin: 0; }
+
+@media print {
+  .panneau { display: none !important; }
+  .atelier { display: block; }
+  .scene { padding: 0; background: none; overflow: visible; }
+  .feuille {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0;
+    box-shadow: none;
+    transform: none;
+  }
+  body { background: #fff; }
+  /* Les aplats de couleur doivent survivre à l'impression : sans cette
+     consigne, le navigateur les retire pour économiser l'encre et le
+     bandeau de franchise TVA devient invisible. */
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

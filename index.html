@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Facturier — factures et devis, sans compte et sans serveur</title>
+<meta name="description" content="Générateur de factures et de devis pour indépendants et petites entreprises belges. Tout se passe dans votre navigateur : aucune donnée n'est envoyée nulle part.">
+<meta name="theme-color" content="#1B1D21">
+<link rel="stylesheet" href="css/facturier.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23C8553D'/><path d='M9 8h14v16l-3.5-2.5L16 24l-3.5-2.5L9 24z' fill='%23fff'/></svg>">
+</head>
+<body>
+
+<!-- ==========================================================
+     L'ATELIER : le plan de travail a gauche, la feuille a droite.
+     A l'impression, le plan de travail disparait entierement et
+     seule la feuille reste — voir la section « impression » de
+     la feuille de style.
+     ========================================================== -->
+<div class="atelier">
+
+  <!-- ---------------------------------------------------- PANNEAU -->
+  <aside class="panneau" aria-label="Réglages du document">
+
+    <header class="panneau__tete">
+      <h1 class="marque">
+        <span class="marque__signe" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="7" fill="#C8553D"/>
+            <path d="M9 8h14v16l-3.5-2.5L16 24l-3.5-2.5L9 24z" fill="#fff"/>
+          </svg>
+        </span>
+        Facturier
+      </h1>
+      <p class="marque__note">Rien ne sort de votre navigateur.</p>
+    </header>
+
+    <div class="panneau__corps">
+
+      <!-- Type et identite du document -->
+      <section class="bloc">
+        <h2 class="bloc__titre">Le document</h2>
+
+        <div class="grille grille--3">
+          <label class="champ">
+            <span class="champ__nom">Type</span>
+            <select id="type" class="champ__saisie">
+              <option value="Facture">Facture</option>
+              <option value="Devis">Devis</option>
+              <option value="Note de crédit">Note de crédit</option>
+            </select>
+          </label>
+          <label class="champ">
+            <span class="champ__nom">Numéro</span>
+            <input id="numero" class="champ__saisie" type="text" placeholder="2026-001">
+          </label>
+          <label class="champ">
+            <span class="champ__nom">Devise</span>
+            <select id="devise" class="champ__saisie">
+              <option value="EUR">EUR €</option>
+              <option value="USD">USD $</option>
+              <option value="GBP">GBP £</option>
+              <option value="CHF">CHF</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="grille grille--2">
+          <label class="champ">
+            <span class="champ__nom">Date d'émission</span>
+            <input id="dateEmission" class="champ__saisie" type="date">
+          </label>
+          <label class="champ">
+            <span class="champ__nom">Échéance</span>
+            <input id="dateEcheance" class="champ__saisie" type="date">
+          </label>
+        </div>
+      </section>
+
+      <!-- Emetteur -->
+      <section class="bloc">
+        <h2 class="bloc__titre">Vous</h2>
+        <label class="champ">
+          <span class="champ__nom">Nom ou raison sociale</span>
+          <input id="emNom" class="champ__saisie" type="text" placeholder="Votre entreprise">
+        </label>
+        <label class="champ">
+          <span class="champ__nom">Adresse</span>
+          <textarea id="emAdresse" class="champ__saisie champ__saisie--zone" rows="3" placeholder="Rue et numéro&#10;Code postal, ville&#10;Pays"></textarea>
+        </label>
+        <div class="grille grille--2">
+          <label class="champ">
+            <span class="champ__nom">N° d'entreprise / TVA</span>
+            <input id="emTva" class="champ__saisie" type="text" placeholder="BE 0123.456.789">
+          </label>
+          <label class="champ">
+            <span class="champ__nom">IBAN</span>
+            <input id="emIban" class="champ__saisie" type="text" placeholder="BE00 0000 0000 0000">
+          </label>
+        </div>
+        <div class="grille grille--2">
+          <label class="champ">
+            <span class="champ__nom">E-mail</span>
+            <input id="emMail" class="champ__saisie" type="email" placeholder="vous@exemple.be">
+          </label>
+          <label class="champ">
+            <span class="champ__nom">Téléphone</span>
+            <input id="emTel" class="champ__saisie" type="tel" placeholder="+32 ...">
+          </label>
+        </div>
+      </section>
+
+      <!-- Client -->
+      <section class="bloc">
+        <h2 class="bloc__titre">Le client</h2>
+        <label class="champ">
+          <span class="champ__nom">Nom ou raison sociale</span>
+          <input id="clNom" class="champ__saisie" type="text" placeholder="Client">
+        </label>
+        <label class="champ">
+          <span class="champ__nom">Adresse</span>
+          <textarea id="clAdresse" class="champ__saisie champ__saisie--zone" rows="3" placeholder="Rue et numéro&#10;Code postal, ville&#10;Pays"></textarea>
+        </label>
+        <label class="champ">
+          <span class="champ__nom">N° de TVA</span>
+          <input id="clTva" class="champ__saisie" type="text" placeholder="BE 0987.654.321">
+        </label>
+      </section>
+
+      <!-- Lignes -->
+      <section class="bloc">
+        <h2 class="bloc__titre">Les prestations</h2>
+        <div id="lignes" class="lignes"></div>
+        <button id="ajouter" class="bouton bouton--fantome" type="button">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          Ajouter une ligne
+        </button>
+      </section>
+
+      <!-- Remise et mentions -->
+      <section class="bloc">
+        <h2 class="bloc__titre">Réglages</h2>
+
+        <div class="grille grille--2">
+          <label class="champ">
+            <span class="champ__nom">Remise globale</span>
+            <div class="champ__groupe">
+              <input id="remise" class="champ__saisie" type="number" min="0" step="0.01" value="0">
+              <select id="remiseType" class="champ__saisie champ__saisie--court">
+                <option value="pct">%</option>
+                <option value="abs">montant</option>
+              </select>
+            </div>
+          </label>
+          <label class="champ">
+            <span class="champ__nom">Acompte déjà versé</span>
+            <input id="acompte" class="champ__saisie" type="number" min="0" step="0.01" value="0">
+          </label>
+        </div>
+
+        <label class="champ champ--case">
+          <input id="franchise" type="checkbox">
+          <span>
+            <strong>Régime de la franchise TVA</strong>
+            <span class="champ__aide">Force tous les taux à 0 % et ajoute la mention
+            « TVA non applicable, art. 56bis du Code de la TVA ».</span>
+          </span>
+        </label>
+
+        <label class="champ">
+          <span class="champ__nom">Mentions et conditions</span>
+          <textarea id="mentions" class="champ__saisie champ__saisie--zone" rows="4"
+            placeholder="Paiement à 30 jours. Tout retard entraîne de plein droit un intérêt…"></textarea>
+        </label>
+
+        <label class="champ">
+          <span class="champ__nom">Note de bas de page</span>
+          <input id="pied" class="champ__saisie" type="text" placeholder="Merci de votre confiance.">
+        </label>
+      </section>
+
+    </div>
+
+    <!-- Actions -->
+    <footer class="panneau__pied">
+      <button id="imprimer" class="bouton bouton--plein" type="button">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M4.5 6V2.5h7V6M4.5 12H3a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1h-1.5M4.5 10h7v3.5h-7z"
+            stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+        </svg>
+        Imprimer / PDF
+      </button>
+      <div class="pied__secondaire">
+        <button id="exporter" class="bouton bouton--discret" type="button">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M8 2v8m0 0 3-3m-3 3L5 7M2.5 12.5h11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Exporter
+        </button>
+        <button id="importer" class="bouton bouton--discret" type="button">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M8 10.5v-8m0 0L5 5.5m3-3 3 3M2.5 12.5h11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Importer
+        </button>
+        <button id="vider" class="bouton bouton--discret" type="button">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M3 4.5h10M6.5 4.5V3h3v1.5M4.5 4.5 5 13h6l.5-8.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Vider
+        </button>
+        <input id="fichier" type="file" accept="application/json" hidden>
+      </div>
+      <p class="pied__note" id="etat" role="status">Enregistré dans ce navigateur uniquement.</p>
+    </footer>
+  </aside>
+
+  <!-- ------------------------------------------------------ SCENE -->
+  <main class="scene">
+    <div class="feuille" id="feuille">
+
+      <header class="doc__tete">
+        <div>
+          <p class="doc__type" id="vType">Facture</p>
+          <p class="doc__numero" id="vNumero">—</p>
+        </div>
+        <div class="doc__dates">
+          <p><span>Émise le</span><b id="vEmission">—</b></p>
+          <p id="vEcheanceLigne"><span>Échéance</span><b id="vEcheance">—</b></p>
+        </div>
+      </header>
+
+      <section class="doc__parties">
+        <div class="partie">
+          <p class="partie__role">Émetteur</p>
+          <p class="partie__nom" id="vEmNom">—</p>
+          <p class="partie__adresse" id="vEmAdresse"></p>
+          <p class="partie__meta" id="vEmTva"></p>
+          <p class="partie__meta" id="vEmContact"></p>
+        </div>
+        <div class="partie">
+          <p class="partie__role">Destinataire</p>
+          <p class="partie__nom" id="vClNom">—</p>
+          <p class="partie__adresse" id="vClAdresse"></p>
+          <p class="partie__meta" id="vClTva"></p>
+        </div>
+      </section>
+
+      <table class="doc__table">
+        <thead>
+          <tr>
+            <th class="col-desc">Description</th>
+            <th class="col-num">Qté</th>
+            <th class="col-num">P.U.</th>
+            <th class="col-num">TVA</th>
+            <th class="col-num">Total</th>
+          </tr>
+        </thead>
+        <tbody id="vLignes"></tbody>
+      </table>
+
+      <section class="doc__bas">
+        <div class="doc__mentions">
+          <p class="doc__mentions__texte" id="vMentions"></p>
+          <p class="doc__mentions__franchise" id="vFranchise" hidden>
+            TVA non applicable, art. 56<i>bis</i> du Code de la TVA.
+          </p>
+          <p class="doc__mentions__iban" id="vIban"></p>
+        </div>
+
+        <div class="doc__totaux">
+          <dl id="vTotaux"></dl>
+          <p class="doc__du">
+            <span>Total à payer</span>
+            <b id="vDu">—</b>
+          </p>
+        </div>
+      </section>
+
+      <footer class="doc__pied" id="vPied"></footer>
+    </div>
+  </main>
+
+</div>
+
+<script src="js/facturier.js"></script>
+</body>
+</html>
