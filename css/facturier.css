@@ -10,6 +10,29 @@
    ce qui sera imprimé et ce qui ne le sera pas.
    ========================================================================== */
 
+/* --------------------------------------------------------------------------
+   LES POLICES SONT EMBARQUÉES, PAS APPELÉES.
+   Lexend Deca et JetBrains Mono sont servies depuis `fonts/`, jamais depuis
+   Google Fonts : un appel externe romprait la promesse « aucune requête
+   réseau », qui est l'argument principal de cet outil. Les deux sont sous
+   licence OFL — voir fonts/LICENCE-DES-POLICES.md.
+   -------------------------------------------------------------------------- */
+@font-face {
+  font-family: 'Lexend Deca';
+  src: url('../fonts/lexend-deca-400.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Lexend Deca';
+  src: url('../fonts/lexend-deca-700.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('../fonts/jetbrains-mono-var.woff2') format('woff2');
+  font-weight: 100 800; font-style: normal; font-display: swap;
+}
+
 /* ⚠️ `[hidden]` a une spécificité nulle : n'importe quelle classe posant un
    `display` le bat, et l'élément « caché » reste visible. On le verrouille
    ici, une fois pour toutes. */
@@ -17,29 +40,41 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
+/* --------------------------------------------------------------------------
+   LA CHARTE DE CORE, REPRISE TELLE QUELLE.
+   Les jetons viennent de site/src/styles/01-tokens.css de core-agency.be.
+   ⚠️ UN SEUL ACCENT, ET IL TIENT TOUTE LA PAGE : pas de seconde teinte
+   résiduelle dans un bouton ou un badge de pied de page. C'est la règle
+   inscrite dans la charte, et c'est elle qui fait qu'une palette se voit.
+   Le blanc sur le violet #6355e0 mesure 5.3:1 — conforme. C'est pour cette
+   raison que la couleur du texte posé sur l'accent est un jeton à part.
+   -------------------------------------------------------------------------- */
 :root {
-  /* L'atelier */
-  --etabli:      #1B1D21;
-  --etabli-haut: #24272C;
-  --etabli-bord: #33373E;
-  --encre-claire:#E8E9EB;
-  --encre-douce: #9AA0A8;
-  --signal:      #C8553D;
-  --signal-vif:  #E0684E;
+  /* L'atelier — le dégradé sombre de la charte */
+  --etabli:      #14141B;
+  --etabli-haut: #1F1F2A;
+  --etabli-bord: #2E2E3D;
+  --encre-claire:#F7F6FD;
+  --encre-douce: #B9B7CC;
+  --signal:      #6355E0;
+  --signal-vif:  #8B7BF5;
+  --sur-signal:  #FFFFFF;
 
   /* Le document */
   --papier:      #FFFFFF;
-  --doc-encre:   #14161A;
-  --doc-douce:   #6B7280;
-  --doc-filet:   #E3E5E9;
+  --doc-encre:   #0E0E12;
+  --doc-douce:   #6B6B7A;
+  --doc-filet:   rgba(14, 14, 18, .10);
+  --doc-lavande: #F1EFFD;
 
   --rayon: 7px;
 
-  /* Une pile système : la police se charge instantanément et l'outil
-     fonctionne hors ligne. Aucune requête réseau, nulle part. */
-  --ui: ui-sans-serif, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --doc: ui-serif, Georgia, "Times New Roman", serif;
-  --chiffres: ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace;
+  /* Lexend Deca partout, comme sur core-agency.be : une seule famille des
+     titres au texte courant. JetBrains Mono pour les chiffres — sur une
+     facture, les colonnes de montants doivent s'aligner. */
+  --ui: 'Lexend Deca', -apple-system, "Segoe UI", Roboto, system-ui, sans-serif;
+  --doc: 'Lexend Deca', -apple-system, "Segoe UI", Roboto, system-ui, sans-serif;
+  --chiffres: 'JetBrains Mono', ui-monospace, Consolas, monospace;
 }
 
 html, body { height: 100%; }
@@ -138,9 +173,9 @@ body {
 .champ__saisie:focus {
   outline: none;
   border-color: var(--signal);
-  box-shadow: 0 0 0 3px rgb(200 85 61 / .16);
+  box-shadow: 0 0 0 3px rgb(99 85 224 / .22);
 }
-.champ__saisie::placeholder { color: #6A7078; }
+.champ__saisie::placeholder { color: #75738C; }
 .champ__saisie--zone { resize: vertical; line-height: 1.45; }
 .champ__saisie--court { width: auto; flex: 0 0 auto; }
 .champ__groupe { display: flex; gap: .4rem; }
@@ -215,7 +250,7 @@ body {
 }
 .bouton--plein {
   width: 100%;
-  color: #fff;
+  color: var(--sur-signal);
   background: var(--signal);
 }
 .bouton--plein:hover { background: var(--signal-vif); }
@@ -257,7 +292,7 @@ body {
   padding: 2.5rem;
   overflow-x: auto;
   background:
-    radial-gradient(ellipse at 50% 0%, #23262B 0%, var(--etabli) 60%);
+    radial-gradient(ellipse at 50% 0%, #23213A 0%, var(--etabli) 62%);
 }
 
 /* Les dimensions sont en millimètres : à l'écran comme à l'impression,
@@ -361,7 +396,7 @@ body {
   margin: 2.5mm 0 0;
   padding: 2mm 2.5mm;
   color: var(--doc-encre);
-  background: #F6F1EF;
+  background: var(--doc-lavande);
   border-left: 2px solid var(--signal);
 }
 .doc__mentions__iban {

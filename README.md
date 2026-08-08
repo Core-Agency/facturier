@@ -7,7 +7,7 @@
 Un fichier HTML, une feuille de style, un script. Ouvrez-le, remplissez,
 imprimez en PDF. Vos données ne quittent jamais votre navigateur.
 
-[![Essayer](https://img.shields.io/badge/Essayer%20maintenant-C8553D?style=for-the-badge&logoColor=white)](https://core-agency.github.io/facturier/)
+[![Essayer](https://img.shields.io/badge/Essayer%20maintenant-6355E0?style=for-the-badge&logoColor=white)](https://core-agency.github.io/facturier/)
 
 ![Licence](https://img.shields.io/badge/licence-MIT-1A1A1A?style=for-the-badge&labelColor=1A1A1A)
 ![Dépendances](https://img.shields.io/badge/dépendances-aucune-1A1A1A?style=for-the-badge&labelColor=1A1A1A)
