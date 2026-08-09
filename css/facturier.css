@@ -478,3 +478,5 @@ body {
      bandeau de franchise TVA devient invisible. */
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
+
+.entete__tiret, .marque__tiret { color: #6355E0; }

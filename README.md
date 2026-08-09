@@ -2,22 +2,22 @@
 
 <img src="img/core-mark-192.png" width="72" height="72" alt="Marque de Core">
 
-# Facturier
+# Core — Factures
 
-**Un outil [Core](https://core-agency.be)**
+**Un outil [Core](https://core-agency.be), agence digitale à Charleroi**
 
 **Factures et devis, sans compte, sans serveur, sans dépendance.**
 
 Un fichier HTML, une feuille de style, un script. Ouvrez-le, remplissez,
 imprimez en PDF. Vos données ne quittent jamais votre navigateur.
 
-[![Essayer](https://img.shields.io/badge/Essayer%20maintenant-6355E0?style=for-the-badge&logoColor=white)](https://core-agency.github.io/facturier/)
+[![Essayer](https://img.shields.io/badge/Essayer%20maintenant-6355E0?style=for-the-badge&logoColor=white)](https://core-agency.github.io/core-factures/)
 
 ![Licence](https://img.shields.io/badge/licence-MIT-1A1A1A?style=for-the-badge&labelColor=1A1A1A)
 ![Dépendances](https://img.shields.io/badge/dépendances-aucune-1A1A1A?style=for-the-badge&labelColor=1A1A1A)
 ![Hors ligne](https://img.shields.io/badge/fonctionne%20hors%20ligne-oui-1A1A1A?style=for-the-badge&labelColor=1A1A1A)
 
-**[core-agency.github.io/facturier](https://core-agency.github.io/facturier/)**
+**[core-agency.github.io/core-factures](https://core-agency.github.io/core-factures/)**
 
 </div>
 
