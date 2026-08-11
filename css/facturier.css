@@ -480,3 +480,28 @@ body {
 }
 
 .entete__tiret, .marque__tiret { color: #6355E0; }
+
+/* ------------------------------------------------------------ FAMILLE
+   Les sept outils de Core ne se connaissaient pas entre eux. Quelqu'un
+   qui arrive ici par une recherche n'avait aucun moyen d'apprendre que
+   les six autres existent.
+   Le bloc vit dans le panneau, que `@media print` masque déjà : il ne
+   peut pas se retrouver sur une facture. */
+.famille {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .3rem .7rem;
+  margin: .7rem 0 0;
+  padding-top: .7rem;
+  border-top: 1px solid var(--etabli-bord);
+  font-size: .72rem;
+}
+.famille__titre { font-weight: 600; color: var(--encre-douce); }
+.famille a {
+  color: var(--signal-vif);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.famille a:hover { border-bottom-color: currentColor; }
+.famille a:focus-visible { outline: 2px solid var(--signal-vif); outline-offset: 2px; }
